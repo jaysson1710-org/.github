@@ -7,7 +7,7 @@
   ],
   "filePatterns": [
       "package.json$",
-      "^Dockerfile",
+      "Dockerfile$",
       ".*\\.md$"
   ]
 }
