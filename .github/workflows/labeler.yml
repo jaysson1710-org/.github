@@ -17,4 +17,4 @@ jobs:
     - uses: actions/labeler@v4
       with:
         repo-token: ${{ secrets.token }}
-        configuration-path: ${{ inputs.config-path }}
+        #configuration-path: ${{ inputs.config-path }}
