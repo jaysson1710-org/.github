@@ -17,4 +17,4 @@ jobs:
     - uses: actions/labeler@v4
       with:
         repo-token: ${{ secrets.token }}
-        configuration-path: jaysson1710-org/.github/.github/workflows/labeler.config.yml@main
+        configuration-path: ${{ inputs.config-path }}
