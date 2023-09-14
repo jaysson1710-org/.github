@@ -1,0 +1,8 @@
+{
+    "name": "managing variables",
+    "description": "pass variables among jobs and steps.",
+    "iconName": "none",
+    "categories": [
+        "general"
+    ]
+}
