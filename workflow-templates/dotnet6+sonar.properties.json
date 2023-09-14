@@ -1,0 +1,8 @@
+{
+    "name": "CI dotnet coverage",
+    "description": "Dotnet + sonar + test + coverage.",
+    "iconName": ".Net",
+    "categories": [
+        "general"
+    ]
+}
