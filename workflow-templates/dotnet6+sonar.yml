@@ -1,0 +1,46 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: NET+Sonar+Test+Coverage
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: install sonar
+      run: |
+        dotnet tool install --global dotnet-sonarscanner  
+        dotnet sonarscanner begin /k:dotnet-demo3 /n:dotnet-demo3 /d:sonar.login=$SONAR_TOKEN /d:sonar.host.url=$SONAR_HOST_URL /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml /d:sonar.cs.vstest.reportsPaths=**/*.trx /d:sonar.exclusions=**/bin/**,**.json,**/obj/*,**.xml,**/testresult/**
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore ./src/dotnet-demoapp.csproj
+    - name: Build
+      run: dotnet build ./src/dotnet-demoapp.csproj  --no-restore
+    
+    - name: run Test
+      run: dotnet test ./tests/tests.csproj --logger trx --results-directory "testresult" --collect "XPlat Code Coverage;Format=opencover" 
+      continue-on-error: true
+    - name: run analysis sonar
+      run: |
+        dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
