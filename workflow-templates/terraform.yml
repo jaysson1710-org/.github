@@ -1,0 +1,85 @@
+name: 'CI_terraform_full'
+
+on:
+  push:
+    branches: [ "main" ]      
+  pull_request:
+
+jobs:
+  terraform:
+    env:
+      TF_LOG: TRACE
+      ARM_CLIENT_ID: ${{ secrets.SERVICE_PRINICIPAL }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_PASS }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT }}
+      
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+      working-directory: .
+      
+
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format
+      run: terraform fmt -check
+      working-directory: .
+      
+    - name: Terraform validate
+      run: terraform validate
+      working-directory: .
+      
+          
+    - name: terraform plan
+      run: terraform plan -out dev.tfplan
+      working-directory: .
+      env:
+        ARM_CLIENT_ID: ${{ secrets.SERVICE_PRINICIPAL }}
+        ARM_CLIENT_SECRET: ${{ secrets.AZURE_PASS }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT }}
+
+    - name: TFSEC
+      run: |
+        wget -q -O tfsec https://github.com/aquasecurity/tfsec/releases/download/v0.58.6/tfsec-linux-amd64  \
+        && chmod +x ./tfsec 
+        ./tfsec .  --soft-fail --format junit >> junit.xml 
+      working-directory: .
+    
+    
+    - name: JUnit Report Action
+      uses: mikepenz/action-junit-report@v3.7.5
+      with:
+        report_paths: '**/junit.xml'
+        
+    - uses: actions/upload-artifact@main
+      with:
+        name: junit_rpt
+        path: ./
+        
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v2
+      if: always()
+      with:
+        files: |
+          ./*.xml
+
+  
