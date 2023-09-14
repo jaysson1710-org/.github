@@ -1,0 +1,8 @@
+{
+    "name": "CI terraform",
+    "description": "Terraform Ci steps.",
+    "iconName": "terraform",
+    "categories": [
+        "general"
+    ]
+}
