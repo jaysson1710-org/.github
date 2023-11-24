@@ -12,6 +12,6 @@ jobs:
       pull-requests: write
     uses: jaysson1710-org/.github/.github/workflows/Workflow-Generic-template.yml@main
     with:
-      config-path: .github/workflows/labeler.yml
+      config-path: .github/workflows/labeler.config.yml
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
