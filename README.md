@@ -1,4 +1,3 @@
 # workflow-templates
 
-use reusable workflows
-
+use reusable workflows.
