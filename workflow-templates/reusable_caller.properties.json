@@ -1,0 +1,8 @@
+{
+  "name": "call reusable workflow",
+  "description": "call reusable workflow. sample: ./reusable_called.yml and use output variables gather from workflow called",
+  "iconName": "respository",
+  "categories": [
+      "Automation"
+  ]
+}

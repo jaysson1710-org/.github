@@ -1,0 +1,8 @@
+{
+  "name": "sample repository_dispatch",
+  "description": "call workflow type repository_dispatch",
+  "iconName": "respository",
+  "categories": [
+      "Automation"
+  ]
+}

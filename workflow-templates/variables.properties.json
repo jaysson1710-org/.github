@@ -1,6 +1,6 @@
 {
     "name": "managing variables",
-    "description": "pass variables among jobs and steps.",
+    "description": "pass variables among jobs and steps. GITHUB_OUTPUT",
     "iconName": "none",
     "categories": [
         "general"

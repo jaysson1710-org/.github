@@ -1,0 +1,8 @@
+{
+    "name": "variable manage",
+    "description": "pass variables between steps nad jobs.",
+    "iconName": "variable",
+    "categories": [
+        "automation"
+    ]
+}

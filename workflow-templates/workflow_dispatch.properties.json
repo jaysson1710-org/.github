@@ -1,0 +1,8 @@
+{
+    "name": "workflow dispatch",
+    "description": "workflow disptach info",
+    "iconName": "none",
+    "categories": [
+        "general"
+    ]
+}
