@@ -1,6 +1,6 @@
 {
   "name": "pull_request info",
-  "description": "using pull request event information ",
+  "description": "pull_request_review event for label and comment",
   "iconName": "pull_request",
   "categories": [
       "Automation"

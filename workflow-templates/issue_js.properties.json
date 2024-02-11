@@ -1,0 +1,8 @@
+{
+    "name": "issue manage through js",
+    "description": "issue manage through js.Comment on new issue.",
+    "iconName": "variable",
+    "categories": [
+        "automation"
+    ]
+}

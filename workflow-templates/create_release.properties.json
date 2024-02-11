@@ -1,0 +1,11 @@
+{
+    "name": "create release",
+    "description": "create release.",
+    "iconName": "example-icon",
+    "categories": [
+        "TypeScript"
+    ],
+    "filePatterns": [
+        "package.json$"
+    ]
+}
