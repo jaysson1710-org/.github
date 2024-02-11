@@ -1,0 +1,37 @@
+# This workflow warns and then closes issues and PRs that have had no activity for a specified amount of time.
+#
+# You can adjust the behavior by modifying this file.
+# For more information, see:
+# https://github.com/actions/stale
+name: issue created
+
+on:
+  issues:
+    types: [opened, edited, milestoned]
+    
+
+jobs:
+  stale:
+
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+        run: |
+          gh issue edit $ISSUE_URL --add-label "question"
+          echo "${{ github.event.issue }}"
+          echo "${{ github.event.action }}"
+          echo "info issue"
+          gh issue view $ISSUE_URL --json url,title,labels,body
+          json=$(gh issue view $ISSUE_URL --json url,title,labels,body)
+          echo $json | jq .title
+          val=$(echo $json | jq .title)
+          if [[ $val == *new* ]]; then
+                  echo "nuevo"
+          else
+                  echo "no"
+          fi
+          

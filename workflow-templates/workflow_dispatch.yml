@@ -1,0 +1,52 @@
+# This workflow warns and then closes issues and PRs that have had no activity for a specified amount of time.
+#
+# You can adjust the behavior by modifying this file.
+# For more information, see:
+# https://github.com/actions/stale
+name: workflow_dispatch - demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+      tags:
+        description: 'Test scenario tags'
+        required: false
+        type: boolean
+
+jobs:
+  log-the-inputs:
+    if: ${{ inputs.tags == false }}
+    env:
+      tag: ${{ inputs.tags }}
+      
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ github.event_name == 'workflow_dispatch' && inputs.logLevel == 'info'}}
+        name: info
+        run: |
+          echo "Log level: $LEVEL"
+          echo "Tags: ${{ inputs.tags }}"
+        env:
+          LEVEL: ${{ inputs.logLevel }}
+          TAGS: ${{ inputs.tags }}
+      - if: ${{ github.event_name == 'workflow_dispatch' && inputs.logLevel == 'debug'}}
+        name: debug
+        run: |
+          echo "${{ toJson(github) }}"
+      - name: condition
+        run: |
+          if [[ ${{ inputs.logLevel == 'warning' }} ]]; then
+            echo "warning: ${{ inputs.logLevel }} tags: ${{ env.tag }}"
+          else
+            echo "otro"
+          fi
+        

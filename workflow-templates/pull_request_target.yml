@@ -1,0 +1,25 @@
+name: Pull request
+
+on: [pull_request_target]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - run: |
+        echo "${{ github.event.pull_request.html_url }}"
+        
+        echo "$GITHUB_REF"
+        echo "$context"
+        ## para ejecutar GH es requerido el token
+        gh pr view "${{ github.event.pull_request.html_url }}" --json url,title
+      env:
+        context: ${{ toJson(github) }} ## se puede invocar cualquier variable de contexto para obtener la info
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} ## pasar el token
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        pr-message: "Message that will be displayed on users' first pull request"

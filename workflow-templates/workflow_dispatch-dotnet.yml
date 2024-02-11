@@ -1,0 +1,26 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on: workflow_dispatch
+
+jobs:
+  build:
+
+      
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Build that shit
+      run: |
+          
+          dotnet nuget add source --username PersonalAccessToken --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/jaysson1710-org/index.json" --force 
+          dotnet restore demo.csproj
+          dotnet build demo.csproj --no-restore
+    

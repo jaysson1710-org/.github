@@ -1,0 +1,19 @@
+name: dispatch receiver
+
+on: 
+  repository_dispatch:
+    types: [command]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.action == 'command' }}
+    steps:
+    - uses: actions/checkout@v1
+    - name: dispatch trigger
+      run: |
+        echo "repository_dispatch triggered"
+        echo "parametros"
+        echo ${{ github.event.client_payload.action }}
+        echo "$#####################"
+        echo "${{ toJson(github.event) }}"
