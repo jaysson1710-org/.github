@@ -1,0 +1,11 @@
+{
+    "name": "concurrency sample",
+    "description": "concurrency sample.",
+    "iconName": "example-icon",
+    "categories": [
+        "Automation"
+    ],
+    "filePatterns": [
+        "package.json$"
+    ]
+}
