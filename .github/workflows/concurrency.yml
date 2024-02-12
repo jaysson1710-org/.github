@@ -1,3 +1,8 @@
+## sample to use concurrency to avoid excessive use from GitHub agents, 
+## Avoid leaving these queue, the option cancel the older running
+
+## additional use option default for setting general configuration for all tasks
+
 name: concurrent workflow
 
 on: [workflow_dispatch]
@@ -14,4 +19,6 @@ jobs:
     runs-on: ubuntu-latest  
     steps:
       - name: test
-        run: echo "$(PWD)"
+        run: |
+          $PWD
+          echo "${{ toJson(github.event) }}"
