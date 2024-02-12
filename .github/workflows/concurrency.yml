@@ -20,5 +20,5 @@ jobs:
     steps:
       - name: test
         run: |
-          $PWD
+          pwd
           echo "${{ toJson(github.event) }}"
