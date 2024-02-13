@@ -1,0 +1,8 @@
+{
+    "name": "commands sample",
+    "description": "basic workflow that show some usefull github commands.",
+    "iconName": "example-icon",
+    "categories": [
+        "Automation"
+    ]
+}

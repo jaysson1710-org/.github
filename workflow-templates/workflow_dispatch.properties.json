@@ -1,8 +1,8 @@
 {
-    "name": "workflow dispatch",
-    "description": "workflow disptach info",
+    "name": "workflow dispatch and sample for conditionals",
+    "description": "workflow disptach info and conditionals if",
     "iconName": "none",
     "categories": [
-        "general"
+        "Automation"
     ]
 }
