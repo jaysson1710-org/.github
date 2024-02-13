@@ -9,10 +9,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate list using Markdown summary
+        run: |
+          echo "This is the lead in sentence for the list" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
+          echo "- Lets add a bullet point" >> $GITHUB_STEP_SUMMARY
+          echo "- Lets add a second bullet point" >> $GITHUB_STEP_SUMMARY
+          echo "- How about a third one?" >> $GITHUB_STEP_SUMMARY
+          
       - run: |
           echo "::debug::Set debug info"
       - name: Create annotation for build error
-        run: echo "::warning file=github_commands.yml,line=3::Error name"
+        run: |
+          echo "::warning file=github_commands.yml,line=3::warning name"
+          echo "::notice file=github_commands.yml,line=4::notice name"
+          echo "::error file=github_commands.yml,line=5::Error name"
       - name: Group of log lines
         run: |
             echo "::group::Grupo1"
@@ -28,3 +39,25 @@ jobs:
       - name: Use that secret output (protected by a mask)
         run: |
             echo "the secret number is ${{ steps.sets-a-secret.outputs.secret-number }}"
+      ## variables
+      - name: Set the value GITHUB_ENV
+        id: step_one
+        run: |
+          echo "action_state=yellow" >> "$GITHUB_ENV"
+      - name: Use the value
+        id: step_two
+        run: |
+          printf '%s\n' "$action_state" # This will output 'yellow'
+
+      - name: Set color GITHUB_OUTPUT
+        id: color-selector
+        run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
+      - name: Get color
+        env:
+          SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
+        run: echo "The selected color is $SELECTED_COLOR"
+      - name: add valores path
+        run: |
+          echo "/HOME/jason" >> $GITHUB_PATH
+          echo $GITHUB_PATH
+      
