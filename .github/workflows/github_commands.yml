@@ -13,5 +13,18 @@ jobs:
           echo "::debug::Set debug info"
       - name: Create annotation for build error
         run: echo "::warning file=github_commands.yml,line=3::Error name"
-      
-
+      - name: Group of log lines
+        run: |
+            echo "::group::Grupo1"
+            echo "Inside group"
+            echo "::endgroup::"
+      ## enmascarando informacion que se quiere no aparezca en los logs
+      - id: sets-a-secret
+        name: Generate, mask, and output a secret
+        run: |
+            the_secret=$((RANDOM))
+            echo "::add-mask::$the_secret"
+            echo "secret-number=$the_secret" >> "$GITHUB_OUTPUT"
+      - name: Use that secret output (protected by a mask)
+        run: |
+            echo "the secret number is ${{ steps.sets-a-secret.outputs.secret-number }}"
