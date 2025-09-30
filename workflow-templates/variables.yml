@@ -110,3 +110,50 @@ jobs:
         shell: bash
         run: |
           echo $TERMINUS_RELEASE
+
+
+  build-and-deploy:
+    runs-on: windows-latest # For Linux, use ubuntu-latest
+    environment: dev
+    steps:
+  
+    - name: 'create json'
+      id: createjson
+      shell: pwsh
+      run: |
+        
+        # Method 1: Using a hashtable and ConvertTo-Json
+        $jsonObject = @{
+            "subscriptionId" = "$env:SUBSCRIPTIONID"
+            "clientId" = "$env:CLIENTID"
+            "clientSecret" = "$env:CLIENTSECRET"
+            "tenantId" = "$env:TENANTID"
+        }
+        
+        $json = $jsonObject | ConvertTo-Json -Compress
+        echo $json
+        
+        ##"AZURE_RBAC_CREDENTIALS=$json" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        Add-Content -Path $env:GITHUB_ENV -Value "AZURE_RBAC_CREDENTIALS=$json"
+        Write-Output $json
+      env:
+        CLIENTID: ${{ secrets.CLIENTID }}
+        CLIENTSECRET: ${{ secrets.CLIENTSECRET }}
+        SUBSCRIPTIONID: ${{ vars.SUBSCRIPTIONID }}
+        TENANTID: ${{ secrets.TENANTID }}
+    # If you want to use Azure RBAC instead of Publish Profile, then uncomment the task below
+    - name: "echo"
+      shell: pwsh
+      run: |
+        echo $env:creds
+        echo "2"
+        echo $env.AZURE_RBAC_CREDENTIALS
+      env:
+        creds: ${{ env.AZURE_RBAC_CREDENTIALS }}
+      
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+         creds: ${{ env.AZURE_RBAC_CREDENTIALS }} # set up AZURE_RBAC_CREDENTIALS secrets in your repository
+
+    
